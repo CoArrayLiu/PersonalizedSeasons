@@ -97,9 +97,14 @@ public class SpringEffects implements Listener {
         }
     }
 
+    private boolean hasFlowerAt(Block block) {
+        return flowerTypes.contains(block.getType());
+    }
+
     private void sprinkleFlowers(Chunk chunk) {
         Random random = new Random();
-        for (int i = 0; i < 32; i++) { // Reduced iteration count
+
+        for (int i = 0; i < 2; i++) { // Reduced iteration count
             int x = random.nextInt(16);
             int z = random.nextInt(16);
 
@@ -107,7 +112,7 @@ public class SpringEffects implements Listener {
             for (int y = chunk.getWorld().getMaxHeight() - 1; y >= 0; y--) {
                 Block block = chunk.getBlock(x, y, z);
                 if (block.getType() != Material.AIR) {
-                    if (canPlaceFlower(block) && random.nextInt(100) < 25) { // Probability check
+                    if (canPlaceFlower(block) && random.nextInt(100) < 25 && !hasFlowerAt(block)) { // Probability check
                         Material flowerType = flowerTypes.toArray(new Material[0])[random.nextInt(flowerTypes.size())];
                         block.getRelative(0, 1, 0).setType(flowerType, false);
                     }
